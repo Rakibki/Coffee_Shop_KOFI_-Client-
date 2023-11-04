@@ -4,19 +4,23 @@ import useCustonAxios from "../../hooks/useCustonAxios";
 import { useQuery } from "@tanstack/react-query";
 import Product from "./Product";
 import {BsChevronLeft, BsChevronRight} from "react-icons/bs"
+import Loadding from "../../shared/Loadding/Loadding";
 const Products = () => {
   const getAxios = useCustonAxios();
+  const [totalProducts, setTotalProduct] = useState(null)
+
   useEffect(() => {
-    fetch("http://localhost:4000/api/v1/productcount")
-    .then((res) => res.json())
-    .then((data) => setTotalProduct(data.result))
+    getAxios.get("/api/v1/productcount/")
+    .then((data) => setTotalProduct(data.data.result))
   }, [])
 
-  const [totalProducts, setTotalProduct] = useState(null)
   const [itemsPerPage, setItemPerPage] = useState(6)
   const pages = Math.ceil(totalProducts / itemsPerPage)
-  const pagination = [...new Array(pages).keys()]
   const [cueentPage, setCurrent] = useState(0)
+
+
+  const pagination = [...new Array(pages).keys()]
+
 
   const {
     isPending,
@@ -27,10 +31,9 @@ const Products = () => {
     queryFn: () => getAxios.get(`/api/v1/products?page=${cueentPage}&size=${itemsPerPage}`),
   });
 
-  console.log(error);
 
   if (isPending) {
-    return <p>loaddeing......</p>;
+    return <Loadding />
   }
 
   const handlePrev = () => {
@@ -59,8 +62,8 @@ const Products = () => {
         <div className="col-span-3">
           <div>Header.........</div>
           <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {products.data.map((item) => (
-              <Product key={item._id} item={item} />
+            {products.data.map((item, index) => (
+              <Product key={index} item={item} />
             ))}
           </div>
           <div className="flex justify-center mt-10 mb-16">

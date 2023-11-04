@@ -52,12 +52,14 @@ const AuhtProvider = ({ children }) => {
   useEffect(() => {
     const dishConnent = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
+      setLoadding(false)
       console.log("user auth Change");
     })
     return () => {
        dishConnent()
     }
   }, [])
+
 
 console.log(user);
   const userInfo = {

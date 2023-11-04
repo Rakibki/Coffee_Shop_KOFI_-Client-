@@ -10,6 +10,9 @@ import Shop from "../pages/shop/Shop";
 import Products from "../pages/products/Products";
 import Our_menus from "../pages/out_menus/Our_menus";
 import Blog from "../pages/Blog/Blog";
+import Product_details from "../pages/product_details/Product_details";
+import Check_out from "../pages/check_out/Check_out";
+import PrivateRouter from "../routers/PrivateRouter"
 
 
   const router = createBrowserRouter([
@@ -36,6 +39,11 @@ import Blog from "../pages/Blog/Blog";
         {
           path: "/blog",
           element: <Blog />
+        },
+        {
+          path: "/productDetails/:id",
+          element: <Product_details />,
+          loader: ({params}) => fetch(`http://localhost:4000/api/v1/productDetails/${params.id}`)
         }
       ] 
     },
@@ -46,6 +54,11 @@ import Blog from "../pages/Blog/Blog";
     {
       path: "/register",
       element: <Register />
+    },
+    {
+      path: "check_out/:id",
+      element: <PrivateRouter> <Check_out /> </PrivateRouter>,
+      loader: ({params}) => fetch(`http://localhost:4000/api/v1/productDetails/${params.id}`)
     }
   ])
 

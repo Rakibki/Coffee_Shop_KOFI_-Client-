@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import Section_Title from "../../shared/section_title/Section_Title";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { authContext } from "../../providers/AuhtProvider";
 
 const Login = () => {
-
   const {loginUser} = useContext(authContext)
+  const location = useLocation()
+  const naviagte = useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,6 +16,7 @@ const Login = () => {
     loginUser(email, password)
     .then((res) => {
       console.log(res.user, "user Login");
+      naviagte(location.state ? location.state : "/")
     })
     .catch((e) => console.log(e.message))
   }
